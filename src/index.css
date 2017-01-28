@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.game {
+  width: 70%;
+  height: 600px;
+  position: relative;
+  display: inline-block;
+  float: left;
+}
+
+.controls {
+  float: left;
+  display: inline-block;
+  width: 30%;
+  height: 600px;
+  position: relative;
+}
+
+.seat {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 2px solid teal;
+}
+
+.player {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  color: white;
+  border-radius: 50%;
+  border: 2px solid;
+}
