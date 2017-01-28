@@ -16,7 +16,14 @@ class Game {
   handleInput(id) {
     const{seats, players} = this
     seats.move(players.getById(id))
-    return this.forUI()
+    this.setState({game: this.forUI()})
+  }
+
+  winner() {
+    const playersOnCouch = this.seats.couchPositions().map(p => p.player)
+    if (playersOnCouch.every(p => p && p.team === 'red')) return 'red'
+    if (playersOnCouch.every(p => p && p.team === 'blue')) return 'blue'
+    return null
   }
 
   nextUp() {
@@ -27,6 +34,7 @@ class Game {
     return {
       seats: this.seats.forUI(),
       nextUp: this.nextUp(),
+      winner: this.winner(),
     }
   }
 }

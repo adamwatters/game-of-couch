@@ -23,7 +23,7 @@ class Players {
   }
 
   getById(id) {
-    return this.players.filter(player => player.answersTo(id))
+    return this.players.filter(player => player.answersTo(id))[0]
   }
 
 }

@@ -18,6 +18,10 @@ class Seats {
     this.seats = seats;
   }
 
+  couchPositions() {
+    return this.seats.filter(s => s.isOnCouch)
+  }
+
   emptySeat() {
     return this.seats.filter(seat => seat.isEmpty())[0]
   }

@@ -1,42 +1,8 @@
 import React, { Component } from 'react';
 import Game from './game/Game';
+import SelectPlayerForm from './SelectPlayerForm';
+import positionToCoordinates from './positionToCoordinates';
 import './App.css';
-
-const toRadians = (angle) => {
-  return angle * (Math.PI / 180);
-}
-
-const positionToCoordinates = (position) => {
-  const r = 220
-  const angle = (position + 1) * 36
-  let angleAsRadians
-  if (angle <= 90) {
-    angleAsRadians = toRadians(angle)
-    return {
-      x: Math.cos(angleAsRadians) * r,
-      y: Math.sin(angleAsRadians) * r,
-    }
-  }
-  if (angle <= 180) {
-    angleAsRadians = toRadians(180 - angle)
-    return {
-      x: -1 * Math.cos(angleAsRadians) * r,
-      y: Math.sin(angleAsRadians) * r,
-    }
-  }
-  if (angle <= 270) {
-    angleAsRadians = toRadians(angle - 180)
-    return {
-      x: -1 * Math.cos(angleAsRadians) * r,
-      y: -1 * Math.sin(angleAsRadians) * r,
-    }
-  }
-  angleAsRadians = toRadians(360 - angle)
-  return {
-    x: Math.cos(angleAsRadians) * r,
-    y: -1 * Math.sin(angleAsRadians) * r,
-  }
-}
 
 class App extends Component {
 
@@ -50,8 +16,7 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.game)
-    const {nextUp, seats, players} = this.state.game
+    const {nextUp, seats, players, winner} = this.state.game
     const width = 70;
     const height = 70;
     const seatElements = seats.map((seat, index) => {
@@ -59,10 +24,12 @@ class App extends Component {
       const styles = {
         transform: `translate(${x - width / 2}px, ${(y * -1) - height / 2}px)`,
         width: `${width}px`,
-        height: `${height}px`
+        height: `${height}px`,
+        color: seat.isOnCouch ? 'white' : 'black',
+        backgroundColor: seat.isOnCouch ? 'black' : 'white',
       }
       return (
-        <div style={styles} className='seat' key={`seat-${index}`}>seat</div>
+        <div style={styles} className='seat' key={`seat-${index}`}>{seat.isOnCouch ? 'couch' : 'seat'}</div>
       )
     })
     const playerElements = seats.map((seat, index) => {
@@ -83,7 +50,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <h2>Game Of Couch</h2>
+          <h2>{winner ? `${winner} team wins!` : 'Game Of Couch'}</h2>
         </div>
         <h2>{nextUp}</h2>
         <div className='game'>
@@ -91,13 +58,7 @@ class App extends Component {
           {playerElements}
         </div>
         <div className='controls'>
-          <form onSubmit={(event) => {
-              event.preventDefault();
-              this.game.handleInput()
-            }} >
-            <input name='name' type="text"/>
-            <input type="submit"/>
-          </form>
+          <SelectPlayerForm handleSubmit={this.game.handleInput.bind(this.game)}/>
         </div>
       </div>
     )
